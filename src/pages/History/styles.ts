@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { ThemeType } from '../../@types/styled'
 
 export const HistoryContainer = styled.main`
   flex: 1;
@@ -62,15 +61,14 @@ export const HistoryList = styled.div`
   }
 `
 
-type StatusColor = 'yellow' | 'red' | 'green'
-interface StatusProps {
-  statusColor: StatusColor
-}
-
-const STATUS_COLORS: Record<StatusColor, keyof ThemeType> = {
+const STATUS_COLORS = {
   yellow: 'yellow-500',
   red: 'red-500',
   green: 'green-500',
+} as const
+
+interface StatusProps {
+  statusColor: keyof typeof STATUS_COLORS
 }
 
 export const Status = styled.span<StatusProps>`
