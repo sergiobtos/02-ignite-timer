@@ -5,7 +5,7 @@ import { NewCycleForm } from './Components/NewCycleForm'
 import {
   HomeContainer,
   StartCountdownButton,
-  StopCountdownButton,
+  StopCountdownButton
 } from './styles'
 
 interface Cycle {
@@ -68,7 +68,11 @@ export function Home() {
     <HomeContainer>
       <form onSubmit={handleSubmit(handleCreateNewCycle)}>
         <NewCycleForm />
-        <Countdown />
+        <Countdown
+          activeCycle={activeCycle}
+          setCycles={setCycles}
+          activeCycleId={activeCycleId}
+        />
         {activeCycle ? (
           <StopCountdownButton onClick={handleStopCycle} type="button">
             <HandPalm size={24} />
