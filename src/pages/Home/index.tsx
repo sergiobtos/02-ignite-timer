@@ -1,5 +1,5 @@
-import { Play } from 'phosphor-react'
-import { useEffect, useState } from 'react'
+import { HandPalm, Play } from 'phosphor-react'
+import { createContext, useState } from 'react'
 import { Countdown } from './Components/Countdown'
 import { NewCycleForm } from './Components/NewCycleForm'
 import {
@@ -17,16 +17,31 @@ interface Cycle {
   finishedDate?: Date
 }
 
+interface CyclesContextType {
+  activeCycle: Cycle | undefined
+  activeCycleId: string | null
+  markCurrentCycleAsFinished: () => void
+}
+
+export const CyclesContext = createContext({} as CyclesContextType)
+
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
-  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
-  const minutesAmount = Math.floor(currentSeconds / 60)
-  const secondsAmount = currentSeconds % 60
-  const minutes = String(minutesAmount).padStart(2, '0')
-  const seconds = String(secondsAmount).padStart(2, '0')
 
+  function markCurrentCycleAsFinished() {
+    setCycles((state) =>
+      state.map((cycle) => {
+        if (cycle.id === activeCycleId) {
+          return { ...cycle, finishedDate: new Date() }
+        } else {
+          return cycle
+        }
+      }),
+    )
+  }
+  /* 
   function handleCreateNewCycle(data: NewCycleFormData) {
     const id = String(new Date().getTime())
     const newCycle: Cycle = {
@@ -40,7 +55,7 @@ export function Home() {
     setActiveCycleId(id)
     setAmountSecondsPassed(0)
     reset()
-  }
+  } */
 
   function handleStopCycle() {
     setActiveCycleId(null)
@@ -56,30 +71,26 @@ export function Home() {
     )
   }
 
-  useEffect(() => {
-    if (activeCycle) document.title = `${minutes}:${seconds}`
-  }, [minutes, seconds, activeCycle])
+  // const task = watch('task')
+  // const isSubmitDisabled = !task
 
-  const task = watch('task')
-  const isSubmitDisabled = !task
-
-  console.log(formState.errors)
+  // console.log(formState.errors)
   return (
     <HomeContainer>
-      <form onSubmit={handleSubmit(handleCreateNewCycle)}>
-        <NewCycleForm />
-        <Countdown
-          activeCycle={activeCycle}
-          setCycles={setCycles}
-          activeCycleId={activeCycleId}
-        />
+      <form /* onSubmit={handleSubmit(handleCreateNewCycle)} */>
+        <CyclesContext.Provider
+          value={{ activeCycle, activeCycleId, markCurrentCycleAsFinished }}
+        >
+          <NewCycleForm />
+          <Countdown />
+        </CyclesContext.Provider>
         {activeCycle ? (
           <StopCountdownButton onClick={handleStopCycle} type="button">
             <HandPalm size={24} />
             Stop
           </StopCountdownButton>
         ) : (
-          <StartCountdownButton disabled={isSubmitDisabled} type="submit">
+          <StartCountdownButton /* disabled={isSubmitDisabled} */ type="submit">
             <Play size={24} />
             Start
           </StartCountdownButton>
