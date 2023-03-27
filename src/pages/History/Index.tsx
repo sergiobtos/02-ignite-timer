@@ -26,13 +26,13 @@ export function History() {
               return (
                 <tr key={cycle.id}>
                   <td>{cycle.task}</td>
+                  <td>{cycle.minutesAmount}</td>
                   <td>
                     {formatDistanceToNow(cycle.startDate, {
                       addSuffix: true,
                       locale: enUS,
                     })}
                   </td>
-                  <td>About {cycle.startDate.toISOString()} minutes</td>
                   <td>
                     {cycle.finishedDate && (
                       <Status statusColor="green">Concluded</Status>
