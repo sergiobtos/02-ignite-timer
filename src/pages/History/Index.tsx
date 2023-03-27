@@ -4,13 +4,12 @@ import { useContext } from 'react'
 import { Cycle, CyclesContext } from '../../contexts/CyclesContext'
 import { HistoryContainer, HistoryList, Status } from './styles'
 
-export function History() {
+export function HistoryPage() {
   const { cycles } = useContext(CyclesContext)
 
   return (
     <HistoryContainer>
       <h1>My history</h1>
-
       <HistoryList>
         <table>
           <thead>

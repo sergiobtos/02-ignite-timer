@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-undef */
 import { Route, Routes } from 'react-router-dom'
 import { DefaultLayout } from './layouts/DefaultLayout.tsx'
-import { History } from './pages/History'
+import { HistoryPage } from './pages/History/Index'
 import { Home } from './pages/Home'
 
 export function Router() {
@@ -9,7 +9,7 @@ export function Router() {
     <Routes>
       <Route path="/" element={<DefaultLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/history" element={<History />} />
+        <Route path="/history" element={<HistoryPage />} />
       </Route>
     </Routes>
   )
